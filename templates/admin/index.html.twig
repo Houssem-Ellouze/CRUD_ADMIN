@@ -1,0 +1,283 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            width: 200px;
+            background-color: #3f51b5;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            z-index: 20;
+            transition: left .5s;
+        }
+        .navbar.shown {
+            left: 0;
+            transition: left .5s;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.2em;
+            width: 100%;
+            padding: 5px 10px;
+            text-align: start;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar a:hover {
+            background-color: #5c6bc0;
+        }
+
+        /* Main Content */
+        .content {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #f3f4f7, #ffffff);
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        .btn-warning {
+            background-color: #ffa000;
+        }
+
+        .btn-warning:hover {
+            background-color: #f57c00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3f51b5;
+            color: white;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            color: black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 1000;
+            list-style: none;
+            border-radius: 5px;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            width: 100%;
+        }
+
+        .dropdown-item {
+            padding: 0;
+            text-decoration: none;
+            display: flex;
+            color: black;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+    <div class="d-flex flex-column justify-content-start align-items-center gap-2 navbar" >
+        <h2>Menu</h2>
+        <a class="navbar-toggler p-2 m-0" href="{{ path('app_admin') }}">Dashboard</a>
+        <a class="navbar-toggler p-2 m-0" href="#">Recruteur</a>
+        <button class="btn btn-secondary position-absolute aside-toggle" style="top:50px;right: -20px"><i class="fa-solid fa-arrow-right"></i></button>
+        <!-- Dropdown Menu for Candidature -->
+        <div class="w-100 dropdown -p-2">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="Candidature" data-toggle="dropdown" data-bs-target="#Candidature" aria-haspopup="true" aria-expanded="false">
+                Candidature
+            </button>
+            <ul class="w-100 d-flex flex-column justify-content-start align-items-center dropdown-menu" aria-labelledby="Candidature" id="Candidature">
+                <li class="w-100 d-flex flex-row justify-content-start align-items-center"><a class="dropdown-item nav-link text-dark m-0" href="#">Offre</a></li>
+                <li class="w-100 d-flex flex-row justify-content-start align-items-center"><a class="dropdown-item nav-link text-dark m-0" href="#">Demande</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <h1>Admin Operation Management</h1>
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="container">
+            <a class="btn btn-danger" href="{{ path('admin_create') }}">Create</a>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Telephone</th>
+                    <th>Age</th>
+                    <th>Login</th>
+                    <th>Mot de passe</th>
+                    <th>Operations</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in list %}
+                    <tr>
+                        <td>{{ data.id }}</td>
+                        <td>{{ data.nom }}</td>
+                        <td>{{ data.prenom }}</td>
+                        <td>{{ data.email }}</td>
+                        <td>{{ data.telephone }}</td>
+                        <td>{{ data.age }}</td>
+                        <td>{{ data.login }}</td>
+                        <td>{{ data.mdp }}</td>
+                        <td>
+                            <a class="btn btn-warning" href="{{ path('update', {'id': data.id}) }}">Update</a>
+                            <a class="btn btn-danger" href="{{ path('delete', {'id': data.id}) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <footer class="w-100 position-fixed bottom-0 bg-body-tertiary d-flex flex-column text-center"  style="height: 100px">
+        <!-- Grid container -->
+        <div class="container-fluid p-4 pb-0" style="height: 50px">
+            <!-- Section: Social media -->
+            <a
+                    data-mdb-ripple-init
+                    class="btn text-white btn-floating m-1"
+                    style="background-color: #3b5998;"
+                    href="https://www.facebook.com/profile.php?id=100090082430281"
+                    role="button"
+            ><i class="fab fa-facebook-f"></i
+                ></a>
+
+            <!-- Twitter -->
+            <a
+                    data-mdb-ripple-init
+                    class="btn text-white btn-floating m-1"
+                    style="background-color: #55acee;"
+                    href="https://x.com/davidgokhs_FK8T"
+                    role="button"
+            ><i class="fab fa-twitter"></i
+                ></a>
+            <!-- Instagram -->
+            <a
+                    data-mdb-ripple-init
+                    class="btn text-white btn-floating m-1"
+                    style="background-color: #ac2bac;"
+                    href="https://www.instagram.com/houssemellouze12/"
+                    role="button"
+            ><i class="fab fa-instagram"></i
+                ></a>
+
+            <!-- Linkedin -->
+            <a
+                    data-mdb-ripple-init
+                    class="btn text-white btn-floating m-1"
+                    style="background-color: #0082ca;"
+                    href="https://www.linkedin.com/in/houssem-ellouze-b51b0b211/"
+                    role="button"
+            ><i class="fab fa-linkedin-in"></i
+                ></a>
+            <!-- Github -->
+            <a
+                    data-mdb-ripple-init
+                    class="btn text-white btn-floating m-1"
+                    style="background-color: #333333;"
+                    href="https://github.com/Houssem-Ellouze"
+                    role="button"
+            ><i class="fab fa-github"></i
+                ></a>
+            <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright: Houssem Ellouze
+
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <script>
+        const button = document.querySelector(".aside-toggle")
+        const navbar = document.querySelector(".navbar")
+        button.addEventListener("click",function (){
+            navbar.classList.toggle("shown")
+            if(navbar.classList.contains("shown")){
+                button.innerHTML = "<i class='fa-solid fa-arrow-left'></i>"
+            }else{
+                button.innerHTML = "<i class='fa-solid fa-arrow-right'></i>"
+            }
+        })
+    </script>
+{% endblock %}
