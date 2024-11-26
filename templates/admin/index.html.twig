@@ -144,12 +144,18 @@
         .dropdown-item:hover {
             background-color: #f1f1f1;
         }
+        form.form-inline.d-flex.align-items-center{
+            padding: 0;
+        }
+
     </style>
+
+
 
     <div class="d-flex flex-column justify-content-start align-items-center gap-2 navbar" >
         <h2>Menu</h2>
         <a class="navbar-toggler p-2 m-0" href="{{ path('app_admin') }}">Dashboard</a>
-        <a class="navbar-toggler p-2 m-0" href="#">Recruteur</a>
+        <a class="navbar-toggler p-2 m-0" href="#">Recruteurs</a>
         <button class="btn btn-secondary position-absolute aside-toggle" style="top:50px;right: -20px"><i class="fa-solid fa-arrow-right"></i></button>
         <!-- Dropdown Menu for Candidature -->
         <div class="w-100 dropdown -p-2">
@@ -162,16 +168,22 @@
             </ul>
         </div>
     </div>
-
     <div class="content">
-        <h1>Admin Operation Management</h1>
+
+        <h1>Admin Operations System Management</h1>
         {% for message in app.flashes('notice') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
         {% endfor %}
+
         <div class="container">
-            <a class="btn btn-danger" href="{{ path('admin_create') }}">Create</a>
+            <form class="form-inline my-2 my-lg-0 d-flex align-items-center">
+                <a class="btn btn-danger my-2 my-sm-0" href="{{ path('admin_create') }}">Create</a>
+                <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
             <table>
                 <thead>
                 <tr>
