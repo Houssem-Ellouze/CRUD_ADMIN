@@ -51,4 +51,13 @@ class AdminRepository extends ServiceEntityRepository
         $entityManager->remove($admin); // Remove the admin entity
         $entityManager->flush(); // Flush the changes to the database
     }
+    public function findByName(string $name): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.nom LIKE :name') // 'nom' correspond à la colonne Nom dans la base de données
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

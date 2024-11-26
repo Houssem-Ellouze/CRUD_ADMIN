@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <style>
         *{
             padding: 0;
@@ -161,7 +162,7 @@
             margin-right: 50px;
         }
         #Users{
-          width: 100%;
+            width: 100%;
         }
         #Candidature{
             width: 100%;
@@ -173,7 +174,7 @@
 
     </style>
 
-        <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar-horizontal">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- Center elements -->
@@ -225,8 +226,8 @@
             Users
         </button>
 
-            <li class="w-100 d-flex flex-row "><a class="dropdown-item nav-link text-white m-0" href="#">Candidat</a></li>
-            <li class="w-100 d-flex flex-row j*"><a class="dropdown-item nav-link text-white m-0" href="#">Recruteur</a></li>
+        <li class="w-100 d-flex flex-row "><a class="dropdown-item nav-link text-white m-0" href="#">Candidat</a></li>
+        <li class="w-100 d-flex flex-row j*"><a class="dropdown-item nav-link text-white m-0" href="#">Recruteur</a></li>
         <button class="btn btn-secondary position-absolute aside-toggle" style="top:50px;right: -20px"><i class="fa-solid fa-arrow-right"></i></button>
         <!-- Dropdown Menu for Candidature -->
         <div class="w-100 dropdown -p-2">
@@ -255,44 +256,42 @@
                 <input class="form-control my-2 my-sm-0" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
-            <form method="get" action="{{ path('admin_search') }}">
-                <input type="text" name="name" placeholder="Search by name">
-                <button type="submit">Search</button>
-            </form>
+                {% if results %}
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Âge</th>
+                            <th>Login</th>
+                            <th>Opérations</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for admin in results %}
+                            <tr>
+                                <td>{{ admin.id }}</td>
+                                <td>{{ admin.nom }}</td>
+                                <td>{{ admin.prenom }}</td>
+                                <td>{{ admin.email }}</td>
+                                <td>{{ admin.telephone }}</td>
+                                <td>{{ admin.age }}</td>
+                                <td>{{ admin.login }}</td>
+                                <td>
+                                    <a href="{{ path('update', { id: admin.id }) }}">Modifier</a>
+                                    <a href="{{ path('delete', { id: admin.id }) }}">Supprimer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Aucun résultat trouvé.</p>
+                {% endif %}
 
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Prenom</th>
-                    <th>Email</th>
-                    <th>Telephone</th>
-                    <th>Age</th>
-                    <th>Login</th>
-                    <th>Mot de passe</th>
-                    <th>Operations</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for data in list %}
-                    <tr>
-                        <td>{{ data.id }}</td>
-                        <td>{{ data.nom }}</td>
-                        <td>{{ data.prenom }}</td>
-                        <td>{{ data.email }}</td>
-                        <td>{{ data.telephone }}</td>
-                        <td>{{ data.age }}</td>
-                        <td>{{ data.login }}</td>
-                        <td>{{ data.mdp }}</td>
-                        <td>
-                            <a class="btn btn-warning" href="{{ path('update', {'id': data.id}) }}">Update</a>
-                            <a class="btn btn-danger" href="{{ path('delete', {'id': data.id}) }}">Delete</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
     <footer class="w-100 position-fixed bottom-0 bg-body-tertiary d-flex flex-column text-center"  style="height: 100px">

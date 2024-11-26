@@ -117,6 +117,22 @@ class AdminController extends AbstractController
         // Redirect to the admin list page
         return $this->redirectToRoute('app_admin');
     }
+    #[Route('/admin/search', name: 'admin_search', methods: ['GET'])]
+    public function searchByName(Request $request): Response
+    {
+        $name = $request->query->get('name', ''); // Récupère le paramètre "name" depuis l'URL
+
+        $results = $name
+            ? $this->adminRepository->findByName($name)
+            : []; // Si aucun nom n'est fourni, retourne un tableau vide
+
+        $this->redirectToRoute('admin_search');
+        return $this->render('admin/search.html.twig', [
+            'results' => $results,
+            'name' => $name,
+        ]);
+    }
+
 
 
 
